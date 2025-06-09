@@ -1,10 +1,10 @@
 import { COLORS, SPACING, TEXT_TYPE } from "@/constants";
 import { StyleSheet } from "react-native";
 
-export const accountItemStyles = StyleSheet.create({
+export const getAccountItemStyles = (pressable: boolean) => StyleSheet.create({
     item: {
         padding: SPACING.sm,
-        backgroundColor: COLORS.gray,
+        backgroundColor: pressable ? COLORS.gray : 'white',
         borderRadius: SPACING.xs,
         flexDirection: 'row',
         justifyContent: 'space-between',

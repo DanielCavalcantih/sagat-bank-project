@@ -9,7 +9,7 @@ export const fetchUserInfo = async () => {
     }
 };
 
-export const fetchUserBankInfo = async () => {
+export const fetchUserAccounts = async () => {
     try {
         const { data } = await authenticatedClient.get('/users/bank_accounts/my');
         return data;

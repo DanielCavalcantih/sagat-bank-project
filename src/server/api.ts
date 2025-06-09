@@ -1,12 +1,13 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { getToken, removeToken } from '../stores/token';
-import { useAuth } from '@/contexts/AuthContext';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '@/navigation/AppNavigator';
 import { navigate } from '@/navigation/navigationRef';
 import { removeUserSelectedAccount } from '@/stores/user_account';
+import { Platform } from 'react-native';
 
-const baseURL = process.env.EXPO_PUBLIC_API_URL;
+const baseURL =
+    Platform.OS === 'android'
+        ? 'http://192.168.1.12:3000/v1'
+        : 'http://localhost:3000/v1';
 
 const apiClient = axios.create({ baseURL });
 const authenticatedClient = axios.create({ baseURL });

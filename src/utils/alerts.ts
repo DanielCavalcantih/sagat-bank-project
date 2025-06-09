@@ -9,7 +9,7 @@ type ShowMessageProps = {
 export const showMessage = ({ message, icon, ...props }: ShowMessageProps) => {
     Toast.show({
         ...props,
-        visibilityTime: 2000,
+        visibilityTime: 4000,
         text1: message,
         type: props.type || 'info',
         props: { icon }
@@ -19,6 +19,8 @@ export const showMessage = ({ message, icon, ...props }: ShowMessageProps) => {
 export const showSuccess = (props: Omit<ShowMessageProps, 'type'>) =>
     showMessage({
         ...props,
+        position: 'bottom',
+        bottomOffset: 100,
         type: 'success'
     });
 

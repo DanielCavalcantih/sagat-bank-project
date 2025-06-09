@@ -12,7 +12,7 @@ export const onboardingStyles = StyleSheet.create({
         fontSize: TEXT_TYPE.h3,
         color: COLORS.primary,
         fontWeight: 800,
-        marginTop: 100
+        marginTop: 80
     },
     subtitle: {
         fontSize: TEXT_TYPE.h4,

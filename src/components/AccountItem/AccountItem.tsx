@@ -1,17 +1,18 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { AccountItemType } from "./AccountItem.types";
-import { accountItemStyles } from "./AccountItem.styles";
+import { getAccountItemStyles } from "./AccountItem.styles";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { COLORS } from "@/constants";
 import { useCallback } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAccounts } from "@/contexts/AccountsContext";
 
-const AccountItem = ({ account, selected, closeModal }: AccountItemType) => {
-    const { setUserSelectedAccount } = useAuth();
+const AccountItem = ({ account, selected, closeModal, pressable = true }: AccountItemType) => {
+    const { setUserSelectedAccount } = useAccounts();
+    const accountItemStyles = getAccountItemStyles(pressable);
 
     const handleAccountPress = useCallback(() => {
         setUserSelectedAccount(account);
-        closeModal();
+        closeModal?.();
     }, [account]);
 
     return (
@@ -29,11 +30,13 @@ const AccountItem = ({ account, selected, closeModal }: AccountItemType) => {
                     <Text>Agência: {account.agency_number}</Text>
                     <Text>Conta: {account.account_number}-{account.agency_digit}</Text>
                 </View>
-                <Text>Tipo: {account.account_type}</Text>
+                <Text>Conta {account.account_type}</Text>
             </View>
-            <View>
-                <FontAwesome6 name="chevron-right" size={18} color={COLORS.primary} />
-            </View>
+            {pressable && (
+                <View>
+                    <FontAwesome6 name="chevron-right" size={18} color={COLORS.primary} />
+                </View>
+            )}
         </TouchableOpacity>
     );
 };

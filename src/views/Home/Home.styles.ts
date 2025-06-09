@@ -1,5 +1,4 @@
 import { COLORS, SPACING, TEXT_TYPE } from "@/constants";
-import BottomSheet from "@gorhom/bottom-sheet";
 import { StyleSheet } from "react-native";
 
 export const homeStyles = StyleSheet.create({
@@ -36,13 +35,17 @@ export const homeStyles = StyleSheet.create({
         fontWeight: 500
     },
     container: {
-        padding: SPACING.md,
-        flex: 1
+        flex: 1,
+        gap: SPACING.md
     },
     bottomSheet: {
         padding: SPACING.xl
     },
     listContent: {
         gap: SPACING.md
+    },
+    containerAmount: {
+        padding: SPACING.md,
+        paddingBottom: 0
     }
 });

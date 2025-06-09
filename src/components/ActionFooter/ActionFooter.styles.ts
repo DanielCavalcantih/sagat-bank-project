@@ -7,6 +7,7 @@ export const actionFooterStyles = StyleSheet.create({
     footer: {
         position: 'absolute',
         bottom: 0,
+        backgroundColor: 'white',
         width
     },
     content: {

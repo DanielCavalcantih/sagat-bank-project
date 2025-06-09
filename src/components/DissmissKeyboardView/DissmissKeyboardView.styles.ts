@@ -1,7 +1,9 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
-export const dissmissKeyboardViewStyles = StyleSheet.create({
+const { height } = Dimensions.get('screen');
+
+export const getDissmissKeyboardViewStyles = (bottom: number) => StyleSheet.create({
     container: {
-        flex: 1
+        height: height - bottom
     },
 });

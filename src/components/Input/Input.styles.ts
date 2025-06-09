@@ -6,7 +6,6 @@ export const inputStyles = StyleSheet.create({
         width: '100%',
         backgroundColor: '#F3F3F3',
         padding: SPACING.md,
-        fontSize: TEXT_TYPE.p,
         borderRadius: SPACING.xs,
         position: 'relative'
     },

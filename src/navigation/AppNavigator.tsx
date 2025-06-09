@@ -1,43 +1,62 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Home, Onboarding } from '@/views';
+import { Home, Onboarding, PixForm, Settings, Transfer, TransferDestiny, TransferProof } from '@/views';
 import Toast from 'react-native-toast-message';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Dimensions, KeyboardAvoidingView, Platform } from 'react-native';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AccountsProvider } from '@/contexts/AccountsContext';
+import { navigationRef } from './navigationRef';
+import { Platform } from 'react-native';
+import { ResponseAccountItem } from '@/components/AccountItem/AccountItem.types';
 
 export type RootStackParamList = {
     Onboarding: undefined;
     Home: undefined;
+    PixForm: undefined;
+    Settings: undefined;
+    TransferDestiny: { amount: number };
+    TransferProof: { accountToTransfer: ResponseAccountItem, amount: number };
+    Transfer: { accountToTransfer: ResponseAccountItem, amount: number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function AppNavigator() {
-    const { bottom } = useSafeAreaInsets();
-    const { height } = Dimensions.get('window');
-
     return (
-        <KeyboardAvoidingView
-            style={{ height: height - bottom }}
-            behavior={Platform.OS === 'ios' ? 'height' : undefined}
-        >
-            <AuthProvider>
-                <NavigationContainer>
-                    <Stack.Navigator
-                        screenOptions={{
-                            contentStyle: {
-                                backgroundColor: 'white'
-                            }
+        <AccountsProvider>
+            <NavigationContainer ref={navigationRef}>
+                <Stack.Navigator
+                    screenOptions={{
+                        contentStyle: {
+                            backgroundColor: 'white'
+                        }
+                    }}
+                >
+                    <Stack.Screen
+                        name="Onboarding"
+                        component={Onboarding}
+                        options={{
+                            headerShown: false,
+                            animation: Platform.OS === 'ios' ? 'ios_from_left' : 'none'
                         }}
-                    >
-                        <Stack.Screen name="Onboarding" component={Onboarding} options={{ headerShown: false }} />
-                        <Stack.Screen name="Home" component={Home} />
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </AuthProvider>
+                    />
+                    <Stack.Screen name="Home" component={Home} />
+                    <Stack.Screen name="PixForm" component={PixForm} />
+                    <Stack.Screen name="TransferDestiny" component={TransferDestiny} />
+                    <Stack.Screen name="Transfer" component={Transfer} />
+                    <Stack.Screen name="TransferProof" component={TransferProof} options={{ headerShown: false }} />
+                    <Stack.Screen
+                        name="Settings"
+                        component={Settings}
+                        options={{
+                            presentation: 'modal',
+                            headerBackVisible: false,
+                            headerTitleAlign: 'center',
+                            title: 'Configurações'
+                        }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
             <Toast />
-        </KeyboardAvoidingView>
+        </AccountsProvider>
     );
 }

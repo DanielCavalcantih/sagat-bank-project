@@ -12,6 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const Modal = ({
     visible = false,
+    open,
     close,
     title,
     children,
@@ -23,6 +24,7 @@ const Modal = ({
 
     useEffect(() => {
         if (visible) {
+            open?.();
             setIsMounted(true);
             Animated.timing(slideAnim, {
                 toValue: 0,

@@ -8,17 +8,17 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Host } from 'react-native-portalize';
 
 export default function App() {
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <SafeAreaProvider>
-          <Host>
-            <DismissKeyboardView>
-              <AppNavigator />
-            </DismissKeyboardView>
-          </Host>
-        </SafeAreaProvider>
-      </BottomSheetModalProvider>
-    </GestureHandlerRootView>
-  );
+	return (
+		<GestureHandlerRootView style={{ flex: 1 }}>
+			<BottomSheetModalProvider>
+				<SafeAreaProvider>
+					<Host>
+						<DismissKeyboardView>
+							<AppNavigator />
+						</DismissKeyboardView>
+					</Host>
+				</SafeAreaProvider>
+			</BottomSheetModalProvider>
+		</GestureHandlerRootView>
+	);
 }

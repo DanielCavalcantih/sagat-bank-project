@@ -5,6 +5,10 @@ import ActionFooter from './ActionFooter';
 import DismissKeyboardView from './DissmissKeyboardView';
 import Modal from './Modal';
 import AccountItem from './AccountItem';
+import Header from './Header';
+import CustomHeader from './CustomHeader';
+import AmountCard from './AmountCard';
+import Card from './Card';
 
 export {
     Button,
@@ -13,5 +17,9 @@ export {
     ActionFooter,
     DismissKeyboardView,
     Modal,
-    AccountItem
+    AccountItem,
+    Header,
+    CustomHeader,
+    AmountCard,
+    Card
 }

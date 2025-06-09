@@ -1,8 +1,8 @@
 import { ResponseAccountItem } from '@/components/AccountItem/AccountItem.types';
 import * as SecureStore from 'expo-secure-store';
 
-export async function saveUserSelectedAccount(account: ResponseAccountItem) {
-    await SecureStore.setItemAsync('userSelectedAccount', JSON.stringify(account));
+export async function saveUserSelectedAccount(accountId: string) {
+    await SecureStore.setItemAsync('userSelectedAccount', accountId);
 };
 
 export async function getUserSelectedAccount(): Promise<string | null> {

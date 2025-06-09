@@ -1,73 +1,111 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { FlatList, View } from "react-native";
 import { homeStyles } from "./Home.styles";
-import { useAuth } from "@/contexts/AuthContext";
-import { fetchUserBankInfo, fetchUserInfo } from "@/server/user";
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import { AccountItem, Modal } from "@/components";
-import { AccountItemType, ResponseAccountItem } from "@/components/AccountItem/AccountItem.types";
-import { getFirstName } from "@/utils/formatter";
+import { useAccounts } from "@/contexts/AccountsContext";
+import { AccountItem, AmountCard, Card, Header, Modal } from "@/components";
+import { ResponseAccountItem } from "@/components/AccountItem/AccountItem.types";
+import { StatusBar } from "expo-status-bar";
+import { CardProps } from "@/components/Card/Card.types";
+import { RootStackParamList } from "@/navigation/AppNavigator";
+import { getUserSelectedAccount, saveUserSelectedAccount } from "@/stores/user_account";
+import { fetchUserAccounts } from "@/server/user";
+import { fetchAccounts } from "@/server/accounts";
+import { SPACING } from "@/constants";
 
 const Home = () => {
-    const navigation = useNavigation();
-    const { setUserInfo, userSelectedAccount } = useAuth();
-    const [accountsList, setAccountsList] = useState<ResponseAccountItem[] | null>(null);
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const { userSelectedAccount, userAccountsList, setUserSelectedAccount, setUserAccountsList, setAccountsList } = useAccounts();
     const [openModalAccounts, setOpenModalAccounts] = useState(false);
 
     const userAccount = useMemo(() => userSelectedAccount, [userSelectedAccount]);
 
+    const handleOpenModal = () => setOpenModalAccounts(true);
+    const handleCloseModal = () => setOpenModalAccounts(false);
+
     useEffect(() => {
+        if (userSelectedAccount) {
+            (async () => {
+                await saveUserSelectedAccount(userSelectedAccount.id);
+            })();
+        }
+    }, [userSelectedAccount]);
+
+    useLayoutEffect(() => {
         (async () => {
-            const data = await fetchUserInfo();
+            const accountsData = await fetchAccounts();
 
-            const bankData = await fetchUserBankInfo();
-
-            if (data) {
-                setUserInfo(data?.user);
+            if (accountsData) {
+                setAccountsList(accountsData.user_bank_accounts);
             }
 
-            if (bankData) {
-                setAccountsList(bankData.user_bank_accounts);
+            const userAccountsData = await fetchUserAccounts();
+            const selectedAccountId = await getUserSelectedAccount();
+
+            if (userAccountsData) {
+                setUserAccountsList(userAccountsData.user_bank_accounts);
+
+                if (!selectedAccountId) {
+                    setUserSelectedAccount(userAccountsData?.user_bank_accounts[0]);
+                    await saveUserSelectedAccount(userAccountsData?.user_bank_accounts[0].id);
+                } else {
+                    const selectedAccount = userAccountsData.find((item: ResponseAccountItem) => item.id === selectedAccountId);
+                    setUserSelectedAccount(selectedAccount);
+                }
             }
         })();
     }, []);
 
-    const handleOpenModal = () => {
-        setOpenModalAccounts(true);
-    };
-
-    const handleCloseModal = () => setOpenModalAccounts(false);
-
     useLayoutEffect(() => {
         navigation.setOptions({
-            header: () => (
-                <View style={homeStyles.header}>
-                    <TouchableOpacity onPress={handleOpenModal} style={homeStyles.changeAccount}>
-                        <FontAwesome5 name="exchange-alt" size={20} color="white" />
-                        <Text style={homeStyles.changeAccountText}>Trocar conta</Text>
-                    </TouchableOpacity>
-
-                    <Text style={homeStyles.headerTitle}>Olá, {getFirstName(userAccount?.holder_name)}</Text>
-                    <View style={homeStyles.accountInfo}>
-                        <Text style={homeStyles.headerSubtitle}>
-                            Agência: {userAccount?.agency_number}
-                        </Text>
-                        <Text style={homeStyles.headerSubtitle}>
-                            Conta: {userAccount?.account_number}-{userAccount?.agency_digit}
-                        </Text>
-                    </View>
-                </View>
-            )
+            header: () => <Header handleOpenModal={handleOpenModal} />
         });
     }, [navigation, userAccount]);
 
+    const handlePixPress = useCallback(() => {
+        navigation.navigate('PixForm');
+    }, [navigation]);
+
+    const cardList: CardProps[] = [{
+        title: 'Pix',
+        icon: 'pix',
+        onPress: handlePixPress
+    }, {
+        title: 'Bancos',
+        icon: 'account-balance',
+        onPress: () => null
+    }, {
+        title: 'Cartões',
+        icon: 'payment',
+        onPress: () => null
+    }, {
+        title: 'Investir',
+        icon: 'bar-chart',
+        onPress: () => null
+    }];
+
     return (
         <View style={homeStyles.container}>
-            <Text>Home</Text>
-            <Modal close={handleCloseModal} title="Selecione uma conta" visible={openModalAccounts}>
+            <StatusBar style="light" />
+
+            <View style={homeStyles.containerAmount}>
+                <AmountCard account={userSelectedAccount} />
+            </View>
+
+            <FlatList
+                data={cardList}
+                keyExtractor={(item) => item.title}
+                renderItem={({ item }) => (
+                    <Card title={item.title} icon={item.icon} onPress={item.onPress} />
+                )}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ gap: SPACING.md, paddingHorizontal: SPACING.md }}
+            />
+
+            <Modal open={handleOpenModal} close={handleCloseModal} title="Selecione uma conta bancária" visible={openModalAccounts}>
                 <View style={homeStyles.listContent}>
-                    {accountsList && accountsList.map((account: ResponseAccountItem, index) => (
+                    {userAccountsList && userAccountsList?.map((account: ResponseAccountItem, index) => (
                         <AccountItem
                             key={index + account.bank_name}
                             account={account}

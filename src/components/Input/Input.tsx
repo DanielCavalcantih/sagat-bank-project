@@ -13,6 +13,7 @@ const Input = ({
     onChangeText,
     allowOnlyNumbers,
     secureTextEntry,
+    style,
     ...props
 }: InputProps) => {
     const { field } = useController({
@@ -45,7 +46,7 @@ const Input = ({
                     onChangeText={onChange}
                     secureTextEntry={secureTextEntry && visibility}
                     {...props}
-                    style={inputStyles.input}
+                    style={[style, inputStyles.input]}
                 />
 
                 {secureTextEntry && (

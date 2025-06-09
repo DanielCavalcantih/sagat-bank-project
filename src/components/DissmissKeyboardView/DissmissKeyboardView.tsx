@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react';
 import {
     Keyboard,
     TouchableWithoutFeedback,
@@ -6,10 +5,15 @@ import {
     Platform,
     StyleSheet,
 } from 'react-native';
-import { dissmissKeyboardViewStyles } from './DissmissKeyboardView.styles';
+import { getDissmissKeyboardViewStyles } from './DissmissKeyboardView.styles';
 import { DismissKeyboardViewProps } from './DissmissKeyboardView.types';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const DismissKeyboardView = ({ children }: DismissKeyboardViewProps) => {
+    const { bottom } = useSafeAreaInsets();
+
+    const dissmissKeyboardViewStyles = getDissmissKeyboardViewStyles(bottom);
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
             <KeyboardAvoidingView
