@@ -86,7 +86,12 @@ BODY
 
 ![App](./assets/app-preview.gif)
 
-  
+## Observações
+- Se eu tivesse mais tempo para desenvolver esse teste, focaria principalmente nas solução de problemas existentes em dispositivos android, pois sabemos que é a dificuldade da grande maioria de devs mobile;
+- Adicionaria um tela de visualização da transferência;
+- Possibilidade de gerar PDF e exportar extrato e comprovante de transferência;
+- Possibilidade de criar e gerenciar chaves PIX;
+- Adicionar uma camera de leitor de QR Code;
 
 
 
