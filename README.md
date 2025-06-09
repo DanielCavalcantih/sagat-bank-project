@@ -82,6 +82,10 @@ BODY
 }
 ````
 
+## Spoilers
+
+![App](./assets/app-preview.gif)
+
   
 
 
