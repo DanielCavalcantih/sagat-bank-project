@@ -1,11 +1,9 @@
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import AppNavigator from '@/navigation/AppNavigator';
 import Toast from 'react-native-toast-message';
 import { DismissKeyboardView } from '@/components';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { Host } from 'react-native-portalize';
 import { LocaleConfig } from 'react-native-calendars';
 
 LocaleConfig.locales['pt-br'] = {
@@ -20,15 +18,9 @@ LocaleConfig.defaultLocale = 'pt-br';
 export default function App() {
 	return (
 		<GestureHandlerRootView style={{ flex: 1 }}>
-			<BottomSheetModalProvider>
-				<SafeAreaProvider>
-					<Host>
-						<DismissKeyboardView>
-							<AppNavigator />
-						</DismissKeyboardView>
-					</Host>
-				</SafeAreaProvider>
-			</BottomSheetModalProvider>
+			<SafeAreaView style={{ flex: 1, backgroundColor: 'white' }} edges={['top', 'bottom']}>
+				<AppNavigator />
+			</SafeAreaView>
 		</GestureHandlerRootView>
 	);
 }

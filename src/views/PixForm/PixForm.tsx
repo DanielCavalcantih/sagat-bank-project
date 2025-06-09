@@ -1,7 +1,7 @@
 import { ActionFooter, CustomHeader, Input } from "@/components";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useCallback, useLayoutEffect, useMemo } from "react";
-import { Text, View } from "react-native";
+import { StatusBar, Text, View } from "react-native";
 import { pixFormStyles } from "./PixForm.styles";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { formatCurrency, formatCurrencyToNumber } from "@/utils/formatter";
@@ -54,6 +54,8 @@ const PixForm = () => {
 
     return (
         <View style={pixFormStyles.container}>
+            <StatusBar barStyle={"dark-content"} backgroundColor="white" />
+
             <Text style={pixFormStyles.title}>Qual o valor da sua transferência?</Text>
 
             <Text style={pixFormStyles.ammount}>

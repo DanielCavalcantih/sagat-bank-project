@@ -1,17 +1,17 @@
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, Platform, StatusBar, View } from "react-native";
 import { homeStyles } from "./Home.styles";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { AccountItem, AmountCard, Card, Header, Modal } from "@/components";
 import { ResponseAccountItem } from "@/components/AccountItem/AccountItem.types";
-import { StatusBar } from "expo-status-bar";
 import { CardProps } from "@/components/Card/Card.types";
 import { RootStackParamList } from "@/navigation/AppNavigator";
 import { getUserSelectedAccount, saveUserSelectedAccount } from "@/stores/user_account";
 import { fetchUserAccounts } from "@/server/user";
-import { fetchAccounts, fetchExtract } from "@/server/accounts";
-import { SPACING } from "@/constants";
+import { fetchAccounts } from "@/server/accounts";
+import { COLORS, SPACING } from "@/constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -20,8 +20,7 @@ const Home = () => {
         userAccountsList,
         setUserSelectedAccount,
         setUserAccountsList,
-        setAccountsList,
-        setExtract
+        setAccountsList
     } = useAccounts();
     const [openModalAccounts, setOpenModalAccounts] = useState(false);
 
@@ -98,7 +97,7 @@ const Home = () => {
 
     return (
         <View style={homeStyles.container}>
-            <StatusBar style="light" />
+            <StatusBar barStyle={Platform.OS === 'ios' ? "dark-content" : "light-content"} backgroundColor={COLORS.primary} />
 
             <View style={homeStyles.containerAmount}>
                 <AmountCard account={userSelectedAccount} />
@@ -106,6 +105,7 @@ const Home = () => {
 
             <FlatList
                 data={cardList}
+                style={{ maxHeight: 120 }}
                 keyExtractor={(item) => item.title}
                 renderItem={({ item }) => (
                     <Card title={item.title} icon={item.icon} onPress={item.onPress} />

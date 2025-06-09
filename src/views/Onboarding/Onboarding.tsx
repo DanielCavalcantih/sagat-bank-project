@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native"
 import { onboardingStyles } from "./Onboarding.styles";
-import { ActionFooter, Input } from "@/components";
+import { ActionFooter, DismissKeyboardView, Input } from "@/components";
 import { buttonItem } from "@/components/ActionFooter/ActionFooter.types";
 import { useForm } from 'react-hook-form';
 import { useCallback, useLayoutEffect, useMemo, useState } from "react";
@@ -78,55 +78,57 @@ const Onboarding = () => {
     }, [isRegister]);
 
     return (
-        <View style={onboardingStyles.container}>
-            <Text style={onboardingStyles.title}>SAGAT BANK</Text>
-            <Text style={onboardingStyles.subtitle}>Seja bem-vindo(a)</Text>
-            <View style={onboardingStyles.containerInputs}>
-                {isRegister && (
+        <DismissKeyboardView>
+            <View style={onboardingStyles.container}>
+                <Text style={onboardingStyles.title}>SAGAT BANK</Text>
+                <Text style={onboardingStyles.subtitle}>Seja bem-vindo(a)</Text>
+                <View style={onboardingStyles.containerInputs}>
+                    {isRegister && (
+                        <Input
+                            name="name"
+                            required={isRegister}
+                            control={control}
+                            label="Nome"
+                            placeholder="Digite seu nome"
+                        />
+                    )}
                     <Input
-                        name="name"
-                        required={isRegister}
+                        name="email"
                         control={control}
-                        label="Nome"
-                        placeholder="Digite seu nome"
+                        required={isRegister}
+                        autoCapitalize="none"
+                        keyboardType="email-address"
+                        autoCorrect={false}
+                        label="E-mail"
+                        placeholder="Digite seu e-mail"
                     />
-                )}
-                <Input
-                    name="email"
-                    control={control}
-                    required={isRegister}
-                    autoCapitalize="none"
-                    keyboardType="email-address"
-                    autoCorrect={false}
-                    label="E-mail"
-                    placeholder="Digite seu e-mail"
-                />
-                <Input
-                    name="password"
-                    control={control}
-                    required={isRegister}
-                    label="Senha"
-                    secureTextEntry
-                    placeholder="Digite sua senha"
-                />
+                    <Input
+                        name="password"
+                        control={control}
+                        required={isRegister}
+                        label="Senha"
+                        secureTextEntry
+                        placeholder="Digite sua senha"
+                    />
+                </View>
+
+                <TouchableOpacity onPress={handleChangeForm}>
+                    {isRegister ? (
+                        <Text style={onboardingStyles.createAccountText}>
+                            Já possui uma conta?
+                            <Text style={onboardingStyles.createAccount}> Faça login</Text>
+                        </Text>
+                    ) : (
+                        <Text style={onboardingStyles.createAccountText}>
+                            Ainda não possui uma conta?
+                            <Text style={onboardingStyles.createAccount}> Crie agora</Text>
+                        </Text>
+                    )}
+                </TouchableOpacity>
+
             </View>
-
-            <TouchableOpacity onPress={handleChangeForm}>
-                {isRegister ? (
-                    <Text style={onboardingStyles.createAccountText}>
-                        Já possui uma conta?
-                        <Text style={onboardingStyles.createAccount}> Faça login</Text>
-                    </Text>
-                ) : (
-                    <Text style={onboardingStyles.createAccountText}>
-                        Ainda não possui uma conta?
-                        <Text style={onboardingStyles.createAccount}> Crie agora</Text>
-                    </Text>
-                )}
-            </TouchableOpacity>
-
             <ActionFooter buttonList={buttons} />
-        </View>
+        </DismissKeyboardView>
     )
 };
 

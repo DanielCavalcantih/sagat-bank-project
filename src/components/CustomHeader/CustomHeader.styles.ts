@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 export const getCustomHeaderStyles = (canGoBack: boolean) => StyleSheet.create({
     header: {
-        height: 110,
+        height: 60,
         justifyContent: 'flex-end',
         borderStyle: 'solid',
         borderColor: 'lightgray',

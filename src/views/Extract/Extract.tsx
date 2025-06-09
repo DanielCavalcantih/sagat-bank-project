@@ -2,13 +2,13 @@ import { CustomHeader, ExtractItem } from "@/components";
 import { RootStackParamList } from "@/navigation/AppNavigator";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, StatusBar, Text, View } from "react-native";
 import { extractStyles } from "./Extract.styles";
 import { fetchExtract } from "@/server/accounts";
 import { useAccounts } from "@/contexts/AccountsContext";
-import { FlatList } from "react-native-gesture-handler";
 import { TransferType } from "./Extract.types";
 import { formatCurrencyToNumber } from "@/utils/formatter";
+import { FlatList } from "react-native-gesture-handler";
 
 const Extract = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -86,9 +86,12 @@ const Extract = () => {
 
     return (
         <View style={extractStyles.container}>
+            <StatusBar barStyle={"dark-content"} backgroundColor="white" />
+
             {data?.length ? (
                 <FlatList
                     data={data}
+                    scrollEnabled
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={renderItem}
                     onEndReached={() => loadNextPage()}
