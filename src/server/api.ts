@@ -3,6 +3,7 @@ import { getToken, removeToken } from '../stores/token';
 import { navigate } from '@/navigation/navigationRef';
 import { removeUserSelectedAccount } from '@/stores/user_account';
 import { Platform } from 'react-native';
+import { showError } from '@/utils';
 
 const baseURL =
     Platform.OS === 'android'
@@ -25,6 +26,7 @@ const attachResponseInterceptor = (client: AxiosInstance) => {
                 if (status === 401) {
                     await removeUserSelectedAccount();
                     await removeToken();
+                    showError({ message: 'Sua sessão expirou, faça login novamente!' })
                     navigate('Onboarding');
                 }
 

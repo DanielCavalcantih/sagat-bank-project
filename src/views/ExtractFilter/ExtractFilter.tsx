@@ -2,19 +2,13 @@ import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import {
     View,
     Text,
-    StyleSheet,
     ScrollView,
-    Platform,
     Pressable
 } from 'react-native';
-import DateTimePicker, {
-    DateTimePickerEvent
-} from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
-import { ActionFooter, Button, CustomHeader, Input, Modal } from '@/components';
+import { ActionFooter, Button, Input, Modal } from '@/components';
 import { useForm } from 'react-hook-form';
 import { currencyMask } from '@/utils/masks';
-import { COLORS, SPACING, TEXT_TYPE } from '@/constants';
+import { COLORS, TEXT_TYPE } from '@/constants';
 import { buttonItem } from '@/components/ActionFooter/ActionFooter.types';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/navigation/AppNavigator';
@@ -22,32 +16,52 @@ import { Calendar } from 'react-native-calendars';
 import { getExtractFilterStyles } from './ExtractFilter.styles';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-interface Props {
-    onApplyFilters: any;
-}
+import { ExtractFilterType } from './ExtractFilter.types';
+import { useAccounts } from '@/contexts/AccountsContext';
+import { formatCurrency, formatCurrencyToForm, formatCurrencyToNumber } from '@/utils/formatter';
 
 const ExtractFilter = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const [showStartPicker, setShowStartPicker] = useState(false);
     const [showEndPicker, setShowEndPicker] = useState(false);
     const { bottom } = useSafeAreaInsets();
+    const { setExtractFilter, extractFilter } = useAccounts();
 
     const extractFilterStyles = getExtractFilterStyles(bottom);
 
-    const { control, handleSubmit, setValue, watch } = useForm<any>({
+    const { control, handleSubmit, setValue, watch } = useForm<ExtractFilterType>({
         defaultValues: {
-            startDate: new Date().toLocaleDateString('pt-BR'),
-            endDate: new Date().toLocaleDateString('pt-BR'),
-            minValue: 'R$ 0,00',
-            maxValue: 'R$ 0,00',
-            transferType: ''
+            startDate: extractFilter?.startDate || '',
+            endDate: extractFilter?.endDate || '',
+            minValue: extractFilter?.minValue
+                ? formatCurrencyToForm(extractFilter.minValue)
+                : 'R$ 0,00',
+            maxValue: extractFilter?.maxValue
+                ? formatCurrencyToForm(extractFilter.maxValue)
+                : 'R$ 0,00',
+            transferType: extractFilter?.transferType || ''
         }
     });
 
     const handleCloseFilter = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
+
+    const handleFilterPress = useCallback(async (values: ExtractFilterType) => {
+        const startDate = values.startDate.split('/').reverse().join('-');
+        const endDate = values.endDate.split('/').reverse().join('-');
+
+        const formatedFilters = {
+            startDate,
+            endDate,
+            minValue: values.minValue,
+            maxValue: values.maxValue,
+            transferType: values.transferType
+        }
+
+        setExtractFilter(formatedFilters);
+        navigation.goBack();
+    }, []);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -58,16 +72,6 @@ const ExtractFilter = () => {
             )
         });
     }, [navigation]);
-
-    const handleDateChange = (
-        _event: DateTimePickerEvent,
-        selectedDate: Date | undefined,
-        isStart: boolean
-    ) => {
-        if (selectedDate) {
-            isStart ? setValue('startDate', selectedDate) : setValue('endDate', selectedDate);
-        }
-    };
 
     const handleChangeMinValue = (text: string) => {
         const masked = currencyMask(text);
@@ -88,8 +92,8 @@ const ExtractFilter = () => {
     const footerButtons: buttonItem[] = useMemo(() => [{
         text: 'Filtrar',
         variant: 'primary',
-        onPress: () => null
-    }], []);
+        onPress: handleSubmit(handleFilterPress)
+    }], [handleFilterPress]);
 
     return (
         <ScrollView contentContainerStyle={extractFilterStyles.container}>
@@ -97,7 +101,7 @@ const ExtractFilter = () => {
                 <Text style={extractFilterStyles.label}>Data Inicial</Text>
 
                 <Button color={COLORS.gray} textBold={false} onPress={() => setShowStartPicker(true)}>
-                    {startDate}
+                    {startDate === '' ? 'Selecione uma data inicial' : startDate}
                 </Button>
 
                 <Modal
@@ -128,7 +132,7 @@ const ExtractFilter = () => {
                 <Text style={extractFilterStyles.label}>Data Final</Text>
 
                 <Button color={COLORS.gray} textBold={false} onPress={() => setShowEndPicker(true)}>
-                    {endDate}
+                    {endDate === '' ? 'Selecione uma data final' : endDate}
                 </Button>
 
                 <Modal

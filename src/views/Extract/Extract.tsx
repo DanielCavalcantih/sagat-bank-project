@@ -8,22 +8,34 @@ import { fetchExtract } from "@/server/accounts";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { FlatList, ScrollView } from "react-native-gesture-handler";
 import { TransferType } from "./Extract.types";
+import { formatCurrencyToNumber } from "@/utils/formatter";
 
 const Extract = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const { setExtract, extract } = useAccounts();
+    const { extractFilter } = useAccounts();
     const [data, setData] = useState<TransferType[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
 
-    const loadMore = useCallback(async () => {
+    const filters = useMemo(() => extractFilter, [extractFilter]);
+
+    const loadNextPage = useCallback(async () => {
         if (loading || isEnd) return;
 
         setLoading(true);
-        const newData = await fetchExtract(page);
 
-        if (newData.bank_account_transfers.length < 10) {
+        if (filters) {
+            const minValue = formatCurrencyToNumber(filters.minValue);
+            const maxValue = formatCurrencyToNumber(filters.maxValue);
+
+            filters['minValue'] = minValue === 0 ? '' : minValue;
+            filters['maxValue'] = maxValue === 0 ? '' : maxValue;
+        }
+
+        const newData = await fetchExtract(page, filters);
+
+        if (newData.bank_account_transfers.length <= 10) {
             setIsEnd(true);
         }
 
@@ -33,8 +45,11 @@ const Extract = () => {
     }, [loading, page, isEnd]);
 
     useEffect(() => {
-        loadMore();
-    }, []);
+        setPage(1);
+        setData([]);
+        setIsEnd(false);
+        loadNextPage();
+    }, [filters]);
 
     const handleFilterPress = useCallback(() => {
         navigation.navigate('ExtractFilter');
@@ -57,20 +72,26 @@ const Extract = () => {
         <ExtractItem transfer={item} />
     );
 
+    const listData = useMemo(() => data, [data]);
+
     return (
         <View style={extractStyles.container}>
-            <FlatList
-                data={data}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItem}
-                onEndReached={loadMore}
-                onEndReachedThreshold={0.01}
-                ListFooterComponent={
-                    loading
-                        ? <ActivityIndicator size="small" style={{ margin: 16 }} />
-                        : null
-                }
-            />
+            {data.length ? (
+                <FlatList
+                    data={listData}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={renderItem}
+                    onEndReached={loadNextPage}
+                    onEndReachedThreshold={0.01}
+                    ListFooterComponent={
+                        loading
+                            ? <ActivityIndicator size="small" style={{ margin: 16 }} />
+                            : null
+                    }
+                />
+            ) : (
+                <Text style={extractStyles.noTransfer}>Nenhuma transferência realizada!</Text>
+            )}
         </View>
     );
 };

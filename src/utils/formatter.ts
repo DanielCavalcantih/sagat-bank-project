@@ -18,10 +18,25 @@ export const formatCurrency = (value: number | undefined, locale = 'pt-BR', curr
     return value;
 };
 
-export const formatCurrencyToNumber = (value: string): number => {
+export const formatCurrencyToForm = (value: string | number | undefined, locale = 'pt-BR', currency = 'BRL') => {
+    if (value) {
+        const formatted = new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency,
+            minimumFractionDigits: 2,
+        }).format(Number(value));
+
+        return formatted;
+    }
+
+    return value;
+};
+
+export const formatCurrencyToNumber = (value: string | number): number => {
     if (!value) return 0;
 
     const clean = value
+        .toString()
         .replace(/\s/g, '')
         .replace('R$', '')
         .replace(/\./g, '')

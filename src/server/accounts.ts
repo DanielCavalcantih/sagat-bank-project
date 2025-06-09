@@ -1,3 +1,4 @@
+import { ExtractFilterType } from "@/views/ExtractFilter/ExtractFilter.types";
 import { authenticatedClient } from "./api";
 
 export const fetchAccounts = async () => {
@@ -31,10 +32,12 @@ export const trasnfer = async (body: BankTransfer) => {
     }
 };
 
-export const fetchExtract = async (page: number) => {
+export const fetchExtract = async (page: number, filters?: ExtractFilterType) => {
+    console.log('CHAMEI');
+
     try {
         const { data } = await authenticatedClient.get(
-            `/users/bank_account_transfers/statements?start_date=&end_date=&min_value=&transfer_type=&page=${page}&per_page=${10}`
+            `/users/bank_account_transfers/statements?start_date=${filters?.startDate}&end_date=${filters?.endDate}&min_value=${filters?.minValue}&max_value=${filters?.maxValue}&transfer_type=${filters?.transferType}&page=${page}&per_page=${10}`
         );
         return data;
     } catch (error) {
