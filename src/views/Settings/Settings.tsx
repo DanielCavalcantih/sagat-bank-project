@@ -2,7 +2,7 @@ import { SectionList, Text, View, SectionListRenderItemInfo, Pressable } from "r
 import { getSettingsStyles } from "./Settings.styles";
 import { useCallback, useLayoutEffect, useMemo } from "react";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { AccountItem, ActionFooter, CustomHeader } from "@/components";
+import { AccountItem, ActionFooter } from "@/components";
 import { buttonItem } from "@/components/ActionFooter/ActionFooter.types";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { removeUserSelectedAccount } from "@/stores/user_account";
@@ -62,6 +62,7 @@ const Settings = () => {
     const renderItem = useCallback(({ item }: SectionListRenderItemInfo<SectionItem>) => (
         <View style={settingsStyles.sectionItem}>
             <MaterialIcons name={item.icon} size={24} color="black" />
+
             <Text style={settingsStyles.sectionItemText}>{item.title}</Text>
         </View>
     ), []);

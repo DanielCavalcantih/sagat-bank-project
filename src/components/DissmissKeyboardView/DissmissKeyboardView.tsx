@@ -2,8 +2,7 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
+    Platform
 } from 'react-native';
 import { getDissmissKeyboardViewStyles } from './DissmissKeyboardView.styles';
 import { DismissKeyboardViewProps } from './DissmissKeyboardView.types';

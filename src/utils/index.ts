@@ -6,4 +6,4 @@ export {
     showSuccess,
     emailValidator,
     passwordValidator
-}
+};

@@ -1,7 +1,7 @@
 import { ActionFooter, CustomHeader, Input } from "@/components";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useCallback, useLayoutEffect, useMemo } from "react";
-import { NativeSyntheticEvent, Text, TextInputChangeEventData, View } from "react-native";
+import { Text, View } from "react-native";
 import { pixFormStyles } from "./PixForm.styles";
 import { useAccounts } from "@/contexts/AccountsContext";
 import { formatCurrency, formatCurrencyToNumber } from "@/utils/formatter";

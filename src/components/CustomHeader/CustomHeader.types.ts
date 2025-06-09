@@ -1,4 +1,4 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 type IconName = React.ComponentProps<typeof MaterialIcons>['name'];
 
@@ -8,4 +8,4 @@ export type CustomHeaderProps = {
     rightActionIcon?: IconName;
     onRightActionPress?: () => void;
     rightText?: string;
-}
+};

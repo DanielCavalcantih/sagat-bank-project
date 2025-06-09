@@ -3,9 +3,8 @@ import { getExtractItemStyles } from "./ExtractItem.styles";
 import { TransferType } from "@/views/Extract/Extract.types";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useAccounts } from "@/contexts/AccountsContext";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { formatCurrency } from "@/utils/formatter";
-import { COLORS } from "@/constants";
 
 type Props = {
     transfer: TransferType;

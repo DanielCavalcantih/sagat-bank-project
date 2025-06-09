@@ -44,22 +44,27 @@ const TransferProof = ({ route }: Props) => {
                     <Text style={transferProofStyles.info}>
                         Nome:
                     </Text>
+
                     <Text style={transferProofStyles.infoTransfer}>
                         {userSelectedAccount?.holder_name}
                     </Text>
                 </View>
+
                 <View style={transferProofStyles.infoContent}>
                     <Text style={transferProofStyles.info}>
                         CPF:
                     </Text>
+
                     <Text style={transferProofStyles.infoTransfer}>
                         {userSelectedAccount && maskCpfHidden(userSelectedAccount?.document)}
                     </Text>
                 </View>
+
                 <View style={transferProofStyles.infoContent}>
                     <Text style={transferProofStyles.info}>
                         Instituição:
                     </Text>
+
                     <Text style={transferProofStyles.infoTransfer}>
                         {userSelectedAccount?.bank_name}
                     </Text>
@@ -73,22 +78,27 @@ const TransferProof = ({ route }: Props) => {
                     <Text style={transferProofStyles.info}>
                         Nome:
                     </Text>
+
                     <Text style={transferProofStyles.infoTransfer}>
                         {accountToTransfer?.holder_name}
                     </Text>
                 </View>
+
                 <View style={transferProofStyles.infoContent}>
                     <Text style={transferProofStyles.info}>
                         CPF:
                     </Text>
+
                     <Text style={transferProofStyles.infoTransfer}>
                         {accountToTransfer && maskCpfHidden(accountToTransfer?.document)}
                     </Text>
                 </View>
+
                 <View style={transferProofStyles.infoContent}>
                     <Text style={transferProofStyles.info}>
                         Instituição:
                     </Text>
+
                     <Text style={transferProofStyles.infoTransfer}>
                         {accountToTransfer?.bank_name}
                     </Text>

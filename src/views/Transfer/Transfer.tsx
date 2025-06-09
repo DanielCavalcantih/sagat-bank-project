@@ -32,14 +32,13 @@ const Transfer = ({ route }: Props) => {
                 from_user_bank_account_id: Number(userSelectedAccount?.id),
                 amount_to_transfer: amount,
                 transfer_type: 1
-            },
-            make_success: true
+            }
         };
 
         const response = await trasnfer(body);
 
         if (response.error) {
-            showError({ message: response.error.message || 'Erro interno no servidor!' })
+            return showError({ message: response.error.message || 'Erro interno no servidor!' })
         }
 
         fetchUserAccountsList();
@@ -56,27 +55,34 @@ const Transfer = ({ route }: Props) => {
     return (
         <View style={transferStyles.container}>
             <Text style={transferStyles.title}>Confirmação de transferência</Text>
+
             <Text style={transferStyles.amount}>R$ {formatCurrency(amount)}</Text>
+
             <View style={transferStyles.receiverContent}>
                 <Text style={transferStyles.receiver}>
                     Para:
                 </Text>
+
                 <Text style={transferStyles.receiverInfo}>
                     {accountToTransfer.holder_name}
                 </Text>
             </View>
+
             <View style={transferStyles.receiverContent}>
                 <Text style={transferStyles.receiver}>
                     CPF:
                 </Text>
+
                 <Text style={transferStyles.receiverInfo}>
                     {maskCpfHidden(accountToTransfer.document)}
                 </Text>
             </View>
+
             <View style={transferStyles.receiverContent}>
                 <Text style={transferStyles.receiver}>
                     Instituição:
                 </Text>
+
                 <Text style={transferStyles.receiverInfo}>
                     {accountToTransfer.bank_name}
                 </Text>

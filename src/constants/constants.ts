@@ -20,6 +20,6 @@ export const TEXT_TYPE = {
     h5: 18,
     h6: 16,
     p: 14
-}
+};
 
 export type VARIANT_TYPE = 'primary' | 'secondary';

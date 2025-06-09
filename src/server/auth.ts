@@ -8,15 +8,13 @@ type LoginUser = {
 
 type NewUser = LoginUser & {
     name?: string
-}
+};
 
 export const login = async (user: LoginUser) => {
     try {
         const { data } = await apiClient.put('/auth/sign_in', { user });
         return { data };
     } catch (error) {
-        console.log(error);
-
         return error;
     }
 };

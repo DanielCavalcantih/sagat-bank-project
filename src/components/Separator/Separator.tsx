@@ -3,7 +3,7 @@ import { separatorStyles } from "./Separator.styles";
 
 const Separator = () => {
     return (
-        <View style={separatorStyles.separator}></View>
+        <View style={separatorStyles.separator} />
     );
 };
 

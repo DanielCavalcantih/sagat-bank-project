@@ -6,50 +6,62 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { extractStyles } from "./Extract.styles";
 import { fetchExtract } from "@/server/accounts";
 import { useAccounts } from "@/contexts/AccountsContext";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import { TransferType } from "./Extract.types";
 import { formatCurrencyToNumber } from "@/utils/formatter";
 
 const Extract = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const { extractFilter } = useAccounts();
+    const { extractFilter, userSelectedAccount } = useAccounts();
     const [data, setData] = useState<TransferType[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
 
-    const filters = useMemo(() => extractFilter, [extractFilter]);
+    const cleanedFilters = useMemo(() => {
+        const min = formatCurrencyToNumber(extractFilter?.minValue || '');
+        const max = formatCurrencyToNumber(extractFilter?.maxValue || '');
 
-    const loadNextPage = useCallback(async () => {
-        if (loading || isEnd) return;
+        return {
+            minValue: min === 0 ? '' : min,
+            maxValue: max === 0 ? '' : max,
+            startDate: extractFilter?.startDate ?? '',
+            endDate: extractFilter?.endDate ?? '',
+            transferType: extractFilter?.transferType ?? '',
+        };
+    }, [extractFilter]);
+
+    const loadNextPage = useCallback(async (reset = false) => {
+        if (loading || (isEnd && !reset)) return;
 
         setLoading(true);
 
-        if (filters) {
-            const minValue = formatCurrencyToNumber(filters.minValue);
-            const maxValue = formatCurrencyToNumber(filters.maxValue);
+        const nextPage = reset ? 1 : page;
+        const response = await fetchExtract(nextPage, cleanedFilters);
+        const newTransfers = response.bank_account_transfers.filter((transfer: TransferType) =>
+            transfer.from_user_bank_account.document === userSelectedAccount?.document ||
+            transfer.to_bank_account.document === userSelectedAccount?.document);
 
-            filters['minValue'] = minValue === 0 ? '' : minValue;
-            filters['maxValue'] = maxValue === 0 ? '' : maxValue;
+        if (reset) {
+            setData(newTransfers);
+            setPage(2);
+        } else {
+            setData(prev => [...prev, ...newTransfers]);
+            setPage(prev => prev + 1);
         }
 
-        const newData = await fetchExtract(page, filters);
+        setIsEnd(response.current_page >= response.total_pages);
 
-        if (newData.bank_account_transfers.length <= 10) {
-            setIsEnd(true);
-        }
-
-        setData((prev) => [...prev, ...newData.bank_account_transfers]);
-        setPage((prev) => prev + 1);
         setLoading(false);
-    }, [loading, page, isEnd]);
+    }, [loading, page, isEnd, cleanedFilters]);
+
 
     useEffect(() => {
-        setPage(1);
-        setData([]);
         setIsEnd(false);
-        loadNextPage();
-    }, [filters]);
+        setPage(1);
+        loadNextPage(true);
+    }, [cleanedFilters]);
+
 
     const handleFilterPress = useCallback(() => {
         navigation.navigate('ExtractFilter');
@@ -72,16 +84,14 @@ const Extract = () => {
         <ExtractItem transfer={item} />
     );
 
-    const listData = useMemo(() => data, [data]);
-
     return (
         <View style={extractStyles.container}>
-            {data.length ? (
+            {data?.length ? (
                 <FlatList
-                    data={listData}
+                    data={data}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={renderItem}
-                    onEndReached={loadNextPage}
+                    onEndReached={() => loadNextPage()}
                     onEndReachedThreshold={0.01}
                     ListFooterComponent={
                         loading

@@ -31,12 +31,12 @@ const Home = () => {
     const handleCloseModal = () => setOpenModalAccounts(false);
 
     useEffect(() => {
-        if (userSelectedAccount) {
+        if (userAccount) {
             (async () => {
-                await saveUserSelectedAccount(userSelectedAccount.id);
+                await saveUserSelectedAccount(userAccount.id);
             })();
         }
-    }, [userSelectedAccount]);
+    }, [userAccount]);
 
     useLayoutEffect(() => {
         (async () => {
@@ -46,24 +46,23 @@ const Home = () => {
                 setAccountsList(accountsData.user_bank_accounts);
             }
 
-            const userExtract = await fetchExtract();
-
-            if (userExtract) {
-                setExtract(userExtract);
-            }
-
             const userAccountsData = await fetchUserAccounts();
             const selectedAccountId = await getUserSelectedAccount();
 
             if (userAccountsData) {
                 setUserAccountsList(userAccountsData.user_bank_accounts);
 
-                if (!selectedAccountId) {
-                    setUserSelectedAccount(userAccountsData?.user_bank_accounts[0]);
-                    await saveUserSelectedAccount(userAccountsData?.user_bank_accounts[0].id);
-                } else {
-                    const selectedAccount = userAccountsData.find((item: ResponseAccountItem) => item.id === selectedAccountId);
+                const fallbackAccount = userAccountsData.user_bank_accounts[0];
+
+                const selectedAccount = userAccountsData.user_bank_accounts.find(
+                    (item: ResponseAccountItem) => item.id == selectedAccountId
+                );
+
+                if (selectedAccount) {
                     setUserSelectedAccount(selectedAccount);
+                } else {
+                    setUserSelectedAccount(fallbackAccount);
+                    await saveUserSelectedAccount(fallbackAccount.id);
                 }
             }
         })();

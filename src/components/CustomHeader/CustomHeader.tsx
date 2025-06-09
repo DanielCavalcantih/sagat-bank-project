@@ -5,7 +5,7 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from "@react-navigation/native";
 import { useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const CustomHeader = ({
     title,
@@ -32,11 +32,14 @@ const CustomHeader = ({
                             <AntDesign name="left" size={20} color="black" />
                         </TouchableOpacity>
                     )}
+
                     <Text style={customHeaderStyles.title}>{title}</Text>
                 </View>
+
                 {rightActionIcon && (
                     <TouchableOpacity style={customHeaderStyles.rightIcon} onPress={onRightActionPress}>
                         <Text style={customHeaderStyles.rigthText}>{rightText}</Text>
+
                         <MaterialIcons name={rightActionIcon} size={24} color="black" />
                     </TouchableOpacity>
                 )}

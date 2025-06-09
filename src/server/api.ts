@@ -1,9 +1,9 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
-import { getToken, removeToken } from '../stores/token';
-import { navigate } from '@/navigation/navigationRef';
-import { removeUserSelectedAccount } from '@/stores/user_account';
-import { Platform } from 'react-native';
-import { showError } from '@/utils';
+import axios, { AxiosError, AxiosInstance } from "axios";
+import { getToken, removeToken } from "../stores/token";
+import { navigate } from "@/navigation/navigationRef";
+import { removeUserSelectedAccount } from "@/stores/user_account";
+import { Platform } from "react-native";
+import { showError } from "@/utils";
 
 const baseURL =
     Platform.OS === 'android'

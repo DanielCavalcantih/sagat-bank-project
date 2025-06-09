@@ -18,7 +18,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ExtractFilterType } from './ExtractFilter.types';
 import { useAccounts } from '@/contexts/AccountsContext';
-import { formatCurrency, formatCurrencyToForm, formatCurrencyToNumber } from '@/utils/formatter';
+import { formatCurrency, formatCurrencyToForm, formatCurrencyToNumber, formatDate } from '@/utils/formatter';
 
 const ExtractFilter = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -29,14 +29,14 @@ const ExtractFilter = () => {
 
     const extractFilterStyles = getExtractFilterStyles(bottom);
 
-    const { control, handleSubmit, setValue, watch } = useForm<ExtractFilterType>({
+    const { control, handleSubmit, setValue, watch, reset } = useForm<ExtractFilterType>({
         defaultValues: {
-            startDate: extractFilter?.startDate || '',
-            endDate: extractFilter?.endDate || '',
-            minValue: extractFilter?.minValue
+            startDate: extractFilter?.startDate ? formatDate(extractFilter?.startDate) : '',
+            endDate: extractFilter?.endDate ? formatDate(extractFilter?.endDate) : '',
+            minValue: extractFilter?.minValue !== undefined
                 ? formatCurrencyToForm(extractFilter.minValue)
                 : 'R$ 0,00',
-            maxValue: extractFilter?.maxValue
+            maxValue: extractFilter?.maxValue !== undefined
                 ? formatCurrencyToForm(extractFilter.maxValue)
                 : 'R$ 0,00',
             transferType: extractFilter?.transferType || ''
@@ -54,14 +54,20 @@ const ExtractFilter = () => {
         const formatedFilters = {
             startDate,
             endDate,
-            minValue: values.minValue,
-            maxValue: values.maxValue,
+            minValue: formatCurrencyToNumber(values.minValue),
+            maxValue: formatCurrencyToNumber(values.maxValue),
             transferType: values.transferType
         }
 
         setExtractFilter(formatedFilters);
         navigation.goBack();
     }, []);
+
+    const handleClearFiltersPress = useCallback(() => {
+        reset();
+        setExtractFilter(undefined);
+        navigation.goBack();
+    }, [navigation]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -90,6 +96,10 @@ const ExtractFilter = () => {
     }, []);
 
     const footerButtons: buttonItem[] = useMemo(() => [{
+        text: 'Limpar filtros',
+        variant: 'secondary',
+        onPress: handleClearFiltersPress
+    }, {
         text: 'Filtrar',
         variant: 'primary',
         onPress: handleSubmit(handleFilterPress)
@@ -112,9 +122,10 @@ const ExtractFilter = () => {
                     <Calendar
                         onDayPress={(day) => {
                             setValue('startDate', day.dateString.split('-').reverse().join('/'));
+                            setShowStartPicker(false);
                         }}
                         markedDates={{
-                            [startDate.split('/').reverse().join('-')]: {
+                            [startDate?.split('/').reverse().join('-')]: {
                                 selected: true,
                                 selectedColor: COLORS.primary,
                             },
@@ -143,9 +154,10 @@ const ExtractFilter = () => {
                     <Calendar
                         onDayPress={(day) => {
                             setValue('endDate', day.dateString.split('-').reverse().join('/'));
+                            setShowEndPicker(false);
                         }}
                         markedDates={{
-                            [endDate.split('/').reverse().join('-')]: {
+                            [endDate?.split('/').reverse().join('-')]: {
                                 selected: true,
                                 selectedColor: COLORS.primary,
                             },
@@ -190,6 +202,7 @@ const ExtractFilter = () => {
                     >
                         Todos
                     </Button>
+
                     <Button
                         style={extractFilterStyles.buttonTypes}
                         textBold={transferType === 'sent'}
@@ -199,6 +212,7 @@ const ExtractFilter = () => {
                     >
                         Enviados
                     </Button>
+
                     <Button
                         style={extractFilterStyles.buttonTypes}
                         textBold={transferType === 'received'}

@@ -1,9 +1,9 @@
-import { ResponseAccountItem } from '@/components/AccountItem/AccountItem.types';
-import { fetchUserAccounts } from '@/server/user';
-import { showError } from '@/utils';
-import { ExtractType } from '@/views/Extract/Extract.types';
-import { ExtractFilterType } from '@/views/ExtractFilter/ExtractFilter.types';
-import React, { createContext, useState, useContext, ReactNode, useCallback } from 'react';
+import { ResponseAccountItem } from "@/components/AccountItem/AccountItem.types";
+import { fetchUserAccounts } from "@/server/user";
+import { showError } from "@/utils";
+import { ExtractType } from "@/views/Extract/Extract.types";
+import { ExtractFilterType } from "@/views/ExtractFilter/ExtractFilter.types";
+import { createContext, useState, useContext, ReactNode, useCallback, useEffect } from "react";
 
 export type AccountsContextType = {
     accountsList?: ResponseAccountItem[];
@@ -40,6 +40,11 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []);
 
+    useEffect(() => {
+        setExtract(undefined);
+        setExtractFilter(undefined);
+    }, [userSelectedAccount?.id]);
+
     return (
         <AccountsContext.Provider
             value={{
@@ -65,7 +70,7 @@ export const useAccounts = () => {
     const context = useContext(AccountsContext);
 
     if (!context) {
-        throw new Error('useAuth deve ser usado dentro de um AuthProvider');
+        throw new Error('useAuth error');
     }
 
     return context;

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Modal as RNModal,
     View,
@@ -59,6 +59,7 @@ const Modal = ({
                             ]}
                         >
                             <Text style={modalStyles.title}>{title}</Text>
+
                             <ScrollView style={modalStyles.content}>
                                 {children}
                             </ScrollView>

@@ -1,6 +1,5 @@
 import { COLORS, SPACING, TEXT_TYPE } from "@/constants";
-import { Dimensions, StyleSheet } from "react-native";
-const { width, height } = Dimensions.get('window');
+import { StyleSheet } from "react-native";
 
 export const onboardingStyles = StyleSheet.create({
     container: {

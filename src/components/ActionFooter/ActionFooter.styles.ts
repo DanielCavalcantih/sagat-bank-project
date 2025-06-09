@@ -1,7 +1,7 @@
 import { SPACING } from "@/constants";
 import { Dimensions, StyleSheet } from "react-native";
 
-const { width } = Dimensions.get('screen')
+const { width } = Dimensions.get('screen');
 
 export const actionFooterStyles = StyleSheet.create({
     footer: {

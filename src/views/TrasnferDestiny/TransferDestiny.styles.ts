@@ -1,4 +1,4 @@
-import { COLORS, SPACING, TEXT_TYPE } from "@/constants";
+import { SPACING, TEXT_TYPE } from "@/constants";
 import { StyleSheet } from "react-native";
 
 export const transferDestinyStyles = StyleSheet.create({

@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Button from "../Button";
 import Separator from "../Separator";
 import { actionFooterStyles } from "./ActionFooter.styles";
@@ -9,6 +9,7 @@ const ActionFooter = ({ buttonList }: FooterProps) => {
         <>
             <View style={actionFooterStyles.footer}>
                 <Separator />
+
                 <View style={actionFooterStyles.content}>
                     {buttonList.map(({ text, variant, onPress, ...props }, index) => (
                         <Button key={text + index} variant={variant} onPress={onPress} {...props}>

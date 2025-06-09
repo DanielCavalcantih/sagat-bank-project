@@ -2,9 +2,9 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { amountCardStyles } from "./AmountCard.styles";
 import { AmmountCardProps } from "./AmountCard.types";
 import { formatCurrency } from "@/utils/formatter";
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useCallback, useState } from "react";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { COLORS } from "@/constants";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "@/navigation/AppNavigator";
@@ -24,6 +24,7 @@ const AmmountCard = ({ account }: AmmountCardProps) => {
             <View style={amountCardStyles.amountContent}>
                 <View style={amountCardStyles.visisbilityExtract}>
                     <Text style={amountCardStyles.amountText}>Seu saldo</Text>
+
                     <TouchableOpacity onPress={handleChangeAmountVisibility}>
                         <MaterialIcons
                             name={amountIsVisible ? 'visibility' : 'visibility-off'}
@@ -32,11 +33,14 @@ const AmmountCard = ({ account }: AmmountCardProps) => {
                         />
                     </TouchableOpacity>
                 </View>
+
                 <TouchableOpacity onPress={handleExtractPress} style={amountCardStyles.extractContent}>
                     <Text style={amountCardStyles.extractText}>Ver extrato</Text>
+
                     <FontAwesome6 name="chevron-right" size={12} color={COLORS.primary} />
                 </TouchableOpacity>
             </View>
+
             <Text style={amountCardStyles.amount}>
                 R$ {amountIsVisible
                     ? formatCurrency(account?.amount)

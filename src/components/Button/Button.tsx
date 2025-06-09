@@ -1,7 +1,7 @@
-import { Pressable, Text, TouchableOpacity } from "react-native"
-import { ButtonProps } from "./Button.types"
-import { getButtonStyles } from "./Button.styles"
-import { JSX } from "react"
+import { Pressable, Text, TouchableOpacity } from "react-native";
+import { ButtonProps } from "./Button.types";
+import { getButtonStyles } from "./Button.styles";
+import { JSX } from "react";
 
 const Button = ({
     onPress,

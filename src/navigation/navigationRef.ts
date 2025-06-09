@@ -10,4 +10,4 @@ export function navigate<RouteName extends keyof RootStackParamList>(
     if (navigationRef.isReady()) {
         navigationRef.navigate(name, params);
     }
-}
+};

@@ -21,6 +21,7 @@ const Header = ({ handleOpenModal }: HeaderProps) => {
         <View style={headerStyles.header}>
             <TouchableOpacity onPress={handleOpenModal} style={headerStyles.changeAccount}>
                 <FontAwesome5 name="exchange-alt" size={20} color="white" />
+
                 <Text style={headerStyles.changeAccountText}></Text>
             </TouchableOpacity>
 
@@ -34,7 +35,7 @@ const Header = ({ handleOpenModal }: HeaderProps) => {
                 </TouchableOpacity>
             </View>
         </View>
-    )
+    );
 };
 
 export default Header;

@@ -1,4 +1,4 @@
-import { SPACING, TEXT_TYPE } from "@/constants";
+import { SPACING } from "@/constants";
 import { StyleSheet } from "react-native";
 
 export const inputStyles = StyleSheet.create({

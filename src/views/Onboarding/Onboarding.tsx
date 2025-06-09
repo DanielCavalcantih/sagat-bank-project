@@ -11,7 +11,6 @@ import {
     emailValidator,
     passwordValidator
 } from "@/utils";
-import Toast from "react-native-toast-message";
 import { getToken, saveToken } from "@/stores/token";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";

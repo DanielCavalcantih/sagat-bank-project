@@ -1,12 +1,10 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Extract, ExtractFilter, Home, Onboarding, PixForm, Settings, Transfer, TransferDestiny, TransferProof } from '@/views';
-import Toast from 'react-native-toast-message';
-import { AccountsProvider } from '@/contexts/AccountsContext';
-import { navigationRef } from './navigationRef';
-import { Platform } from 'react-native';
-import { ResponseAccountItem } from '@/components/AccountItem/AccountItem.types';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Extract, ExtractFilter, Home, Onboarding, PixForm, Settings, Transfer, TransferDestiny, TransferProof } from "@/views";
+import Toast from "react-native-toast-message";
+import { AccountsProvider } from "@/contexts/AccountsContext";
+import { navigationRef } from "./navigationRef";
+import { ResponseAccountItem } from "@/components/AccountItem/AccountItem.types";
 
 export type RootStackParamList = {
     Onboarding: undefined;
