@@ -9,6 +9,7 @@ import Header from './Header';
 import CustomHeader from './CustomHeader';
 import AmountCard from './AmountCard';
 import Card from './Card';
+import ExtractItem from './ExtractItem';
 
 export {
     Button,
@@ -21,5 +22,6 @@ export {
     Header,
     CustomHeader,
     AmountCard,
-    Card
+    Card,
+    ExtractItem
 }

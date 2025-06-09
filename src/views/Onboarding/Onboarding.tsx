@@ -68,6 +68,7 @@ const Onboarding = () => {
 
     const buttons: buttonItem[] = useMemo(() => [{
         text: isRegister ? 'Criar conta' : 'Entrar',
+        variant: 'primary',
         onPress: handleSubmit(handleSave),
         disabled: !isFormValid
     }], [isRegister, isFormValid])

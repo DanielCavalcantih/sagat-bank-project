@@ -1,12 +1,17 @@
 import { COLORS, SPACING, TEXT_TYPE, VARIANT_TYPE } from "@/constants";
 import { StyleSheet } from "react-native";
 
-export const getButtonStyles = (variant: VARIANT_TYPE, disabled?: boolean) => StyleSheet.create({
+export const getButtonStyles = (
+    variant?: VARIANT_TYPE,
+    disabled?: boolean,
+    textBold?: boolean,
+    color?: string,
+    textSize?: number
+) => StyleSheet.create({
     button: {
         padding: SPACING.sm,
-        backgroundColor: disabled ? '#F3F3F3' : COLORS[variant],
-        borderRadius: SPACING.xs,
-        width: '100%'
+        backgroundColor: disabled ? '#F3F3F3' : variant ? COLORS[variant] : color,
+        borderRadius: SPACING.xs
     },
     secondaryButton: {
         borderStyle: 'solid',
@@ -14,9 +19,9 @@ export const getButtonStyles = (variant: VARIANT_TYPE, disabled?: boolean) => St
         borderColor: 'lightgray'
     },
     textButton: {
-        fontSize: TEXT_TYPE.h5,
+        fontSize: textSize ? textSize : TEXT_TYPE.h5,
         textAlign: 'center',
-        fontWeight: 800,
+        fontWeight: textBold ? 600 : 400,
         color: disabled ? 'lightgray' : variant === 'primary' ? 'white' : 'black'
     }
 });

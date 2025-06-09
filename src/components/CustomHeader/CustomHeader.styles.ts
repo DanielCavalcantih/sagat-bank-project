@@ -13,12 +13,26 @@ export const getCustomHeaderStyles = (canGoBack: boolean) => StyleSheet.create({
     iconButton: {
         padding: SPACING.md
     },
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     content: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    rightIcon: {
+        padding: SPACING.md,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.xs
+    },
+    rigthText: {
+        fontSize: TEXT_TYPE.h6
     },
     title: {
         fontSize: TEXT_TYPE.h5,
-        width: '100%'
+        width: '50%'
     }
 });

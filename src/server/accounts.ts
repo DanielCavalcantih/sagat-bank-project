@@ -30,3 +30,14 @@ export const trasnfer = async (body: BankTransfer) => {
         return error;
     }
 };
+
+export const fetchExtract = async (page: number) => {
+    try {
+        const { data } = await authenticatedClient.get(
+            `/users/bank_account_transfers/statements?start_date=&end_date=&min_value=&transfer_type=&page=${page}&per_page=${10}`
+        );
+        return data;
+    } catch (error) {
+        return error;
+    }
+};

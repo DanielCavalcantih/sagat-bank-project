@@ -49,6 +49,7 @@ const Transfer = ({ route }: Props) => {
 
     const footerButtons: buttonItem[] = useMemo(() => [{
         text: 'Transferir',
+        variant: 'primary',
         onPress: handleTransferPress
     }], [handleTransferPress]);
 

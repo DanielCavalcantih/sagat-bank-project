@@ -1,7 +1,8 @@
 import { ResponseAccountItem } from '@/components/AccountItem/AccountItem.types';
 import { fetchUserAccounts } from '@/server/user';
 import { showError } from '@/utils';
-import React, { createContext, useState, useContext, ReactNode, useLayoutEffect, useEffect, useCallback } from 'react';
+import { ExtractType } from '@/views/Extract/Extract.types';
+import React, { createContext, useState, useContext, ReactNode, useCallback } from 'react';
 
 export type AccountsContextType = {
     accountsList?: ResponseAccountItem[];
@@ -11,6 +12,8 @@ export type AccountsContextType = {
     userSelectedAccount?: ResponseAccountItem;
     setUserSelectedAccount: React.Dispatch<React.SetStateAction<ResponseAccountItem | undefined>>;
     fetchUserAccountsList: () => void;
+    extract?: ExtractType;
+    setExtract: React.Dispatch<React.SetStateAction<ExtractType | undefined>>;
 };
 
 const AccountsContext = createContext<AccountsContextType | undefined>(undefined);
@@ -19,6 +22,7 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
     const [accountsList, setAccountsList] = useState<ResponseAccountItem[] | undefined>(undefined);
     const [userAccountsList, setUserAccountsList] = useState<ResponseAccountItem[] | undefined>(undefined);
     const [userSelectedAccount, setUserSelectedAccount] = useState<ResponseAccountItem | undefined>(undefined);
+    const [extract, setExtract] = useState<ExtractType | undefined>(undefined);
 
     const fetchUserAccountsList = useCallback(async () => {
         const response = await fetchUserAccounts();
@@ -41,7 +45,9 @@ export const AccountsProvider = ({ children }: { children: ReactNode }) => {
                 setUserSelectedAccount,
                 accountsList,
                 fetchUserAccountsList,
-                setAccountsList
+                setAccountsList,
+                extract,
+                setExtract
             }}
         >
             {children}

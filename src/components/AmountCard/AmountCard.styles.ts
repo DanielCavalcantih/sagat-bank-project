@@ -20,7 +20,7 @@ export const amountCardStyles = StyleSheet.create({
     },
     amountText: {
         fontSize: TEXT_TYPE.h6,
-        width: 70
+        width: 74
     },
     amount: {
         fontSize: TEXT_TYPE.h3,

@@ -49,6 +49,7 @@ const Settings = () => {
     const handleLogoutPress = useCallback(async () => {
         await removeUserSelectedAccount();
         await removeToken();
+        navigation.goBack();
         navigation.navigate('Onboarding');
     }, []);
 

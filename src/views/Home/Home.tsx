@@ -10,12 +10,19 @@ import { CardProps } from "@/components/Card/Card.types";
 import { RootStackParamList } from "@/navigation/AppNavigator";
 import { getUserSelectedAccount, saveUserSelectedAccount } from "@/stores/user_account";
 import { fetchUserAccounts } from "@/server/user";
-import { fetchAccounts } from "@/server/accounts";
+import { fetchAccounts, fetchExtract } from "@/server/accounts";
 import { SPACING } from "@/constants";
 
 const Home = () => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const { userSelectedAccount, userAccountsList, setUserSelectedAccount, setUserAccountsList, setAccountsList } = useAccounts();
+    const {
+        userSelectedAccount,
+        userAccountsList,
+        setUserSelectedAccount,
+        setUserAccountsList,
+        setAccountsList,
+        setExtract
+    } = useAccounts();
     const [openModalAccounts, setOpenModalAccounts] = useState(false);
 
     const userAccount = useMemo(() => userSelectedAccount, [userSelectedAccount]);
@@ -37,6 +44,12 @@ const Home = () => {
 
             if (accountsData) {
                 setAccountsList(accountsData.user_bank_accounts);
+            }
+
+            const userExtract = await fetchExtract();
+
+            if (userExtract) {
+                setExtract(userExtract);
             }
 
             const userAccountsData = await fetchUserAccounts();

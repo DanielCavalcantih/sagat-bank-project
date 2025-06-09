@@ -48,6 +48,7 @@ const PixForm = () => {
 
     const footerButtons: buttonItem[] = useMemo(() => [{
         text: 'Continuar',
+        variant: 'primary',
         onPress: handleSubmit(handleContinuePress)
     }], [handleContinuePress]);
 

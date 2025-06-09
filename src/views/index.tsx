@@ -5,6 +5,8 @@ import PixForm from "./PixForm";
 import TransferDestiny from "./TrasnferDestiny";
 import Transfer from "./Transfer";
 import TransferProof from "./TransferProof";
+import ExtractFilter from "./ExtractFilter";
+import Extract from "./Extract";
 
 export {
     Onboarding,
@@ -13,5 +15,7 @@ export {
     PixForm,
     TransferDestiny,
     Transfer,
-    TransferProof
+    TransferProof,
+    Extract,
+    ExtractFilter
 };

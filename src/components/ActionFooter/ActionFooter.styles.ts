@@ -11,7 +11,7 @@ export const actionFooterStyles = StyleSheet.create({
         width
     },
     content: {
-        padding: SPACING.xl,
+        padding: SPACING.md,
         gap: SPACING.md,
     }
 });

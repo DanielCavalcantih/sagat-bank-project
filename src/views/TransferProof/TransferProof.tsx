@@ -27,6 +27,7 @@ const TransferProof = ({ route }: Props) => {
         variant: 'secondary'
     }, {
         text: 'Finalizar',
+        variant: 'primary',
         onPress: handleDoneTransfer
     }], [handleDoneTransfer]);
 

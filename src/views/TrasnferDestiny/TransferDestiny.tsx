@@ -23,8 +23,6 @@ const TransferDestiny = ({ route }: Props) => {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const { amount } = route.params;
     const { accountsList } = useAccounts();
-    console.log(accountsList);
-
 
     const { control, handleSubmit, reset, watch, setValue } = useForm<TransferDestinyType>({
         defaultValues: {
@@ -56,6 +54,7 @@ const TransferDestiny = ({ route }: Props) => {
 
     const footerButtons: buttonItem[] = useMemo(() => [{
         text: 'Continuar',
+        variant: 'primary',
         onPress: handleSubmit(handleContinuePress)
     }], [handleContinuePress]);
 
